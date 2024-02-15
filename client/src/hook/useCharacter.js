@@ -1,26 +1,31 @@
-import React from 'react'
 import { useQuery, gql } from '@apollo/client';
 
-const GET_CHARACTERS_LIST = gql`
-  query GetCharactersList {
-    characters{
-        results {
+const GET_CHARACTER = gql`
+  query GetCharacter($id: ID!) {
+    character(id: $id) {
+      id
+      name
+      image
+      gender
+      episode {
         id
+        episode
         name
-        image
+      }
     }
-    } 
   }
 `;
 
-const useCharacter = () => {
-    const { loading, error, data } = useQuery(GET_CHARACTERS_LIST);
+const useCharacter = (id) => {
+  const { loading, error, data } = useQuery(GET_CHARACTER, {
+    variables: { id }
+  });
+
   return {
-    error,
     loading,
-    data
-  }
-}
+    error,
+    data 
+  };
+};
 
-export default useCharacter
-
+export default useCharacter;
